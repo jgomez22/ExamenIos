@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "Tickets.h"
+#import "ListTicketViewController.h"
 
 @interface ViewController ()
 
@@ -17,22 +18,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self requestListTickets];
+    //[self requestListTickets];
 }
 
--(void)addTaskAsync{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadTableView:) name:@"GetListUser" object:nil];
+- (IBAction)addTaskAsync:(id)sender {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadTableView:) name:@"GetListTicket" object:nil];
     [self requestListTickets];
 }
 
 -(void)loadTableView:(NSNotification*)notification{
-    /*
-     NSArray*listUsers= (NSArray*)[notification object];
-     ListUserViewController*listView = [[ListUserViewController alloc] init];
-     [listView setListUsers:listUsers];
-     [self presentViewController:listView animated:true completion:nil];
-    */
-    NSArray*listTickets=(NSArray*)[notification object];
+    NSArray*listTickets= (NSArray*)[notification object];
+    ListTicketViewController*listView = [[ListTicketViewController alloc] init];
+    [listView setListTickets:listTickets];
+    [self presentViewController:listView animated:true completion:nil];
     
 }
 
@@ -62,7 +60,9 @@
                         [newTickets initWithDictionary:ticketsDictionary];
                         [sendListTickets addObject: newTickets];
                     }
-            
+                    dispatch_async(dispatch_get_main_queue(),^{
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"GetListTicket" object:sendListTickets];
+                    });
                 }
             }
         }];
