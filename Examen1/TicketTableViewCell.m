@@ -174,14 +174,13 @@
                             constant:40.00]];
     
     //constraint de titulo
-    //top
     [constraints addObject:[NSLayoutConstraint
                             constraintWithItem:titulo
-                            attribute:NSLayoutAttributeTop
+                            attribute:NSLayoutAttributeCenterY
                             relatedBy:NSLayoutRelationEqual
-                            toItem:self
-                            attribute:NSLayoutAttributeTop
-                            multiplier:1.0 constant:20]];
+                            toItem:imagen
+                            attribute:NSLayoutAttributeCenterY
+                            multiplier:1.0 constant:0.0]];
     //leading
     [constraints addObject:[NSLayoutConstraint
                             constraintWithItem:titulo
@@ -235,8 +234,23 @@
 
 -(void)loadWithUser:(Tickets*)tickets{
     [self loadImagen:tickets.url_img];
-    [self loadNombreCompleto:tickets.title];
+    [self loadTitulo:tickets.title];
     [self loadComponenteFecha:tickets.date];
+    [self loadHoraFuncion:tickets.startTime withFinal:tickets.endTime];
+}
+
+-(void)loadHoraFuncion:(NSString*)inicio withFinal:(NSString*)final{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"HH:mm:ss"];
+    NSDate *hourstart = [dateFormatter dateFromString:inicio];
+    NSDate *hourend = [dateFormatter dateFromString:final];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"HH:mm a"];
+    NSString *horainicio = [formatter stringFromDate:hourstart];
+    NSString *horafinal = [formatter stringFromDate:hourend];
+    NSLog(@"%@",horainicio);
+    NSLog(@"%@",horafinal);
 }
 
 -(void)loadComponenteFecha:(NSString*)fecha{
@@ -253,8 +267,10 @@
     [dia setText:day];
 }
 
--(void)loadNombreCompleto:(NSString*)title{
+-(void)loadTitulo:(NSString*)title{
     [titulo setText:title];
+    titulo.textColor = [UIColor whiteColor];
+    
 }
 
 -(void)loadImagen:(NSString*)url_img{
