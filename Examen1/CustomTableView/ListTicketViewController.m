@@ -21,6 +21,7 @@
     [super viewDidLoad];
     
     tableView = [[UITableView alloc]init];
+    tableView.backgroundColor = [UIColor blackColor];
     [tableView registerClass:[TicketTableViewCell class] forCellReuseIdentifier:@"TicketCell"];
     [self.view addSubview:tableView];
     

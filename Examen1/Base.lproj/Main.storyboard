@@ -20,6 +20,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bOs-eH-t9v">
                                 <rect key="frame" x="149" y="318.5" width="77" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal" title="Ver Tickets"/>
                                 <connections>
                                     <action selector="addTaskAsync:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ADK-Eb-b0r"/>

@@ -37,6 +37,8 @@
 
     titulo = [[UILabel alloc]init];
     imagen = [[UIImageView alloc]init];
+    horaFuncion = [[UILabel alloc]init];
+    lugarFuncion = [[UILabel alloc]init];
     
     cabecera  = [[UIView alloc] init];
     cabecera.backgroundColor = [UIColor redColor];
@@ -49,6 +51,8 @@
     
     [self addSubview:titulo];
     [self addSubview:imagen];
+    [self addSubview:horaFuncion];
+    [self addSubview:lugarFuncion];
     [self addSubview:cabecera];
     [self addSubview:cuerpo];
     [self addSubview:dia];
@@ -58,10 +62,48 @@
     
     [titulo setTranslatesAutoresizingMaskIntoConstraints:false];
     [imagen setTranslatesAutoresizingMaskIntoConstraints:false];
+    [horaFuncion setTranslatesAutoresizingMaskIntoConstraints:false];
+    [lugarFuncion setTranslatesAutoresizingMaskIntoConstraints:false];
     [cabecera setTranslatesAutoresizingMaskIntoConstraints:false];
     [cuerpo setTranslatesAutoresizingMaskIntoConstraints:false];
     [dia setTranslatesAutoresizingMaskIntoConstraints:false];
     [mes setTranslatesAutoresizingMaskIntoConstraints:false];
+    
+    //constraint de lugar de funcion
+    //top
+    [constraints addObject:[NSLayoutConstraint
+                            constraintWithItem:lugarFuncion
+                            attribute:NSLayoutAttributeTop
+                            relatedBy:NSLayoutRelationEqual
+                            toItem:horaFuncion
+                            attribute:NSLayoutAttributeBottom
+                            multiplier:1.0 constant:10.00]];
+    //leading
+    [constraints addObject:[NSLayoutConstraint
+                            constraintWithItem:lugarFuncion
+                            attribute:NSLayoutAttributeLeading
+                            relatedBy:NSLayoutRelationEqual
+                            toItem:horaFuncion
+                            attribute:NSLayoutAttributeLeading
+                            multiplier:1.0 constant:0.00]];
+    
+    //constraint hora de la funcion
+    //top
+    [constraints addObject:[NSLayoutConstraint
+                            constraintWithItem:horaFuncion
+                            attribute:NSLayoutAttributeTop
+                            relatedBy:NSLayoutRelationEqual
+                            toItem:cabecera
+                            attribute:NSLayoutAttributeTop
+                            multiplier:1.0 constant:0.00]];
+    //leading
+    [constraints addObject:[NSLayoutConstraint
+                            constraintWithItem:horaFuncion
+                            attribute:NSLayoutAttributeLeading
+                            relatedBy:NSLayoutRelationEqual
+                            toItem:imagen
+                            attribute:NSLayoutAttributeTrailing
+                            multiplier:1.0 constant:0.00]];
     
     //constraint dia
     //centraod horizontalmente con respecto al cuerpo
@@ -237,20 +279,34 @@
     [self loadTitulo:tickets.title];
     [self loadComponenteFecha:tickets.date];
     [self loadHoraFuncion:tickets.startTime withFinal:tickets.endTime];
+    [self loadLugarFuncion:tickets.address];
+}
+
+-(void)loadLugarFuncion:(NSString*)lugar{
+    [lugarFuncion setText:lugar];
+    lugarFuncion.textColor = [UIColor whiteColor];
+    
+    UIFontDescriptor * fontD = [lugarFuncion.font.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
+    lugarFuncion.font = [UIFont fontWithDescriptor:fontD size:0];
 }
 
 -(void)loadHoraFuncion:(NSString*)inicio withFinal:(NSString*)final{
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"HH:mm:ss"];
+    
     NSDate *hourstart = [dateFormatter dateFromString:inicio];
     NSDate *hourend = [dateFormatter dateFromString:final];
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"HH:mm a"];
+    
     NSString *horainicio = [formatter stringFromDate:hourstart];
     NSString *horafinal = [formatter stringFromDate:hourend];
-    NSLog(@"%@",horainicio);
-    NSLog(@"%@",horafinal);
+    
+    NSString*funcion = [NSString stringWithFormat:@"%@ - %@", horainicio, horafinal];
+    [horaFuncion setText:funcion];
+    horaFuncion.textColor = [UIColor whiteColor];
 }
 
 -(void)loadComponenteFecha:(NSString*)fecha{
@@ -263,14 +319,17 @@
     NSString *day = [formatter stringFromDate:date];
     [formatter setDateFormat:@"MMM"];
     NSString *month = [formatter stringFromDate:date];
+    
     [mes setText:month];
+    mes.textColor = [UIColor whiteColor];
+    
     [dia setText:day];
+    [dia setFont:[UIFont systemFontOfSize:30]];
 }
 
 -(void)loadTitulo:(NSString*)title{
     [titulo setText:title];
     titulo.textColor = [UIColor whiteColor];
-    
 }
 
 -(void)loadImagen:(NSString*)url_img{
