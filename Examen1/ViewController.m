@@ -7,27 +7,66 @@
 //
 
 #import "ViewController.h"
+#import "AutorTableViewCell.h"
+#import "ListUserViewController.h"
+#import "TCSAuthor.h"
+
 
 @interface ViewController ()
 
-@property(nonatomic,strong) NSString*name;//@"value"
-@property(nonatomic,strong) NSString*day;//@value
-@property(nonatomic,strong) NSString*address;
+@property(nonatomic,strong) NSString*code;//@"value"
+//@property(nonatomic,strong) NSString*title;//@value
+@property(nonatomic,strong) NSString*date;
 @property(nonatomic,strong) NSString*startTime;
+@property(nonatomic,strong) NSString*endTime;
+@property(nonatomic,strong) NSString*address;
+@property(nonatomic,strong) NSString*created_at;
+@property(nonatomic,strong) NSString*modify_at;
+
 
 
 
 @end
 
-@implementation ViewController
+@implementation ViewController{
+   
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self RequestListTicket];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    UIButton*btnLogin = [[UIButton alloc] init];
+    [btnLogin setTitle:@"Login" forState:UIControlStateNormal];
+    [btnLogin setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    [btnLogin setBackgroundColor:[UIColor orangeColor]];
+    [btnLogin setFrame:CGRectMake((self.view.frame.size.width-80)/2, 100, 80, 40)];
+    
+    [self.view addSubview:btnLogin];
+    
+    
+    
+
+    
     
 }
 
+- (IBAction)addTaskAsync:(id)sender {
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadTableView:) name:@"GetListAuthor" object:nil];
+    [self RequestListTicket];
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    
+    
+}
+
+//KVO o Patron Observer
+-(void)loadTableView:(NSNotification*)notification{
+    NSArray*listAuthors= (NSArray*)[notification object];
+    ListUserViewController*listView = [[ListUserViewController alloc] init];
+    [listView setListAutors:listAuthors];
+    [self presentViewController:listView animated:true completion:nil];
+}
 - (void)RequestListTicket{
     NSURL*urlTicket = [NSURL URLWithString:@"https://api.myjson.com/bins/tp1am"];
     NSMutableURLRequest*request = [NSMutableURLRequest requestWithURL:urlTicket
@@ -46,12 +85,21 @@
         if (error==nil){
             if([httpResponse statusCode] == 200){
                 
-                NSDictionary*dictFromData=[NSJSONSerialization JSONObjectWithData:data  options:NSJSONReadingAllowFragments error:&error];
-                NSLog(@"Z");
+                NSDictionary*dictFromdata=[NSJSONSerialization JSONObjectWithData:data  options:NSJSONReadingAllowFragments error:&error];
+                NSArray*listAuthors = (NSArray*)dictFromdata;
+                NSMutableArray*sendListAuthor = [[NSMutableArray alloc] init];
+                for (NSDictionary*autorDictionary in listAuthors) {
+                    TCSAuthor*newAuthor = [[TCSAuthor alloc] init];
+                    [newAuthor initWithDictionary:autorDictionary];
+                    [sendListAuthor addObject: newAuthor];
                 
             }
+                dispatch_async(dispatch_get_main_queue(),^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"GetListAuthor" object:sendListAuthor];
+        });
+            }
         }
-    
+                
     }];
     [postdataTask resume];
     
