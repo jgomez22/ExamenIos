@@ -23,6 +23,7 @@
     tableView = [[UITableView alloc]init];
     tableView.backgroundColor = [UIColor blackColor];
     [tableView registerClass:[TicketTableViewCell class] forCellReuseIdentifier:@"TicketCell"];
+    [tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:tableView];
     
     [tableView setTranslatesAutoresizingMaskIntoConstraints:false];
@@ -60,6 +61,7 @@
     [cell loadWithUser:(Tickets*)[self.listTickets objectAtIndex:indexPath.row]];
     // Configure the cell...
     cell.backgroundColor = [UIColor blackColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

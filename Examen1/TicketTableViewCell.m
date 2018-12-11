@@ -20,6 +20,8 @@
     UIView*cuerpo;
     UILabel*dia;
     UILabel*mes;
+    
+    UIView*contenedorPrincipal;
 }
 
 - (void)awakeFromNib {
@@ -34,21 +36,23 @@
 }
 
 -(void)addViews{
-
+    
+    contenedorPrincipal = [[UILabel alloc]init];
+    //[[NSColor brownColor] colorWithAlphaComponent:0.1];
+    contenedorPrincipal.backgroundColor = [[UIColor whiteColor]colorWithAlphaComponent:0.1];
     titulo = [[UILabel alloc]init];
     imagen = [[UIImageView alloc]init];
     horaFuncion = [[UILabel alloc]init];
     lugarFuncion = [[UILabel alloc]init];
-    
     cabecera  = [[UIView alloc] init];
-    cabecera.backgroundColor = [UIColor redColor];
     cuerpo  = [[UIView alloc] init];
-    cuerpo.backgroundColor = [UIColor whiteColor];
-    
     dia = [[UILabel alloc]init];
     mes = [[UILabel alloc]init];
     
+    cabecera.backgroundColor = [UIColor redColor];
+    cuerpo.backgroundColor = [UIColor whiteColor];
     
+    [self addSubview:contenedorPrincipal];
     [self addSubview:titulo];
     [self addSubview:imagen];
     [self addSubview:horaFuncion];
@@ -57,9 +61,11 @@
     [self addSubview:cuerpo];
     [self addSubview:dia];
     [self addSubview:mes];
+    [self addSubview:mes];
     
     NSMutableArray*constraints=[[NSMutableArray alloc]init];
     
+    [contenedorPrincipal setTranslatesAutoresizingMaskIntoConstraints:false];
     [titulo setTranslatesAutoresizingMaskIntoConstraints:false];
     [imagen setTranslatesAutoresizingMaskIntoConstraints:false];
     [horaFuncion setTranslatesAutoresizingMaskIntoConstraints:false];
@@ -68,6 +74,36 @@
     [cuerpo setTranslatesAutoresizingMaskIntoConstraints:false];
     [dia setTranslatesAutoresizingMaskIntoConstraints:false];
     [mes setTranslatesAutoresizingMaskIntoConstraints:false];
+    
+    //constraint contenedor principal
+    [constraints addObject:[NSLayoutConstraint
+                            constraintWithItem:contenedorPrincipal
+                            attribute:NSLayoutAttributeTop
+                            relatedBy:NSLayoutRelationEqual
+                            toItem:self
+                            attribute:NSLayoutAttributeTop
+                            multiplier:1.0 constant:10.00]];
+    [constraints addObject:[NSLayoutConstraint
+                            constraintWithItem:contenedorPrincipal
+                            attribute:NSLayoutAttributeBottom
+                            relatedBy:NSLayoutRelationEqual
+                            toItem:self
+                            attribute:NSLayoutAttributeBottom
+                            multiplier:1.0 constant:-10.00]];
+    [constraints addObject:[NSLayoutConstraint
+                            constraintWithItem:contenedorPrincipal
+                            attribute:NSLayoutAttributeLeading
+                            relatedBy:NSLayoutRelationEqual
+                            toItem:self
+                            attribute:NSLayoutAttributeLeading
+                            multiplier:1.0 constant:20.00]];
+    [constraints addObject:[NSLayoutConstraint
+                            constraintWithItem:contenedorPrincipal
+                            attribute:NSLayoutAttributeTrailing
+                            relatedBy:NSLayoutRelationEqual
+                            toItem:self
+                            attribute:NSLayoutAttributeTrailing
+                            multiplier:1.0 constant:-20.00]];
     
     //constraint de lugar de funcion
     //top
@@ -238,7 +274,7 @@
                             constraintWithItem:imagen
                             attribute:NSLayoutAttributeTop
                             relatedBy:NSLayoutRelationEqual
-                            toItem:self
+                            toItem:contenedorPrincipal
                             attribute:NSLayoutAttributeTop
                             multiplier:1.0 constant:0]];
     //Leading
@@ -246,7 +282,7 @@
                             constraintWithItem:imagen
                             attribute:NSLayoutAttributeLeading
                             relatedBy:NSLayoutRelationEqual
-                            toItem:self
+                            toItem:contenedorPrincipal
                             attribute:NSLayoutAttributeLeading
                             multiplier:1.0 constant:0]];
     
@@ -286,8 +322,8 @@
     [lugarFuncion setText:lugar];
     lugarFuncion.textColor = [UIColor whiteColor];
     
-    UIFontDescriptor * fontD = [lugarFuncion.font.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
-    lugarFuncion.font = [UIFont fontWithDescriptor:fontD size:0];
+    UIFontDescriptor * cursiva = [lugarFuncion.font.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
+    lugarFuncion.font = [UIFont fontWithDescriptor:cursiva size:0];
 }
 
 -(void)loadHoraFuncion:(NSString*)inicio withFinal:(NSString*)final{
@@ -329,6 +365,8 @@
 
 -(void)loadTitulo:(NSString*)title{
     [titulo setText:title];
+    UIFontDescriptor*negrita = [titulo.font.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+    titulo.font = [UIFont fontWithDescriptor:negrita size:24];
     titulo.textColor = [UIColor whiteColor];
 }
 
