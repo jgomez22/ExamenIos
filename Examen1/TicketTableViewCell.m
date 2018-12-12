@@ -35,6 +35,8 @@
     // Configure the view for the selected state
 }
 
+#pragma mark - Agregar Vistas
+
 -(void)addViews{
     
     contenedorPrincipal = [[UILabel alloc]init];
@@ -60,7 +62,6 @@
     [self addSubview:cabecera];
     [self addSubview:cuerpo];
     [self addSubview:dia];
-    [self addSubview:mes];
     [self addSubview:mes];
     
     NSMutableArray*constraints=[[NSMutableArray alloc]init];
@@ -139,7 +140,7 @@
                             relatedBy:NSLayoutRelationEqual
                             toItem:imagen
                             attribute:NSLayoutAttributeTrailing
-                            multiplier:1.0 constant:0.00]];
+                            multiplier:1.0 constant:10.00]];
     
     //constraint dia
     //centraod horizontalmente con respecto al cuerpo
@@ -214,8 +215,8 @@
                             multiplier:1.0
                             constant:20.00]];
     
-    //constraint contenedor
-    //top
+    //constraint cuerpo
+    //top con respecto al bottom de la cabecera
     [constraints addObject:[NSLayoutConstraint
                             constraintWithItem:cuerpo
                             attribute:NSLayoutAttributeTop
@@ -252,6 +253,7 @@
                             constant:40.00]];
     
     //constraint de titulo
+    //centrado vertical con respecto a la imagen
     [constraints addObject:[NSLayoutConstraint
                             constraintWithItem:titulo
                             attribute:NSLayoutAttributeCenterY
@@ -259,7 +261,7 @@
                             toItem:imagen
                             attribute:NSLayoutAttributeCenterY
                             multiplier:1.0 constant:0.0]];
-    //leading
+    //leading con respecto al titulo
     [constraints addObject:[NSLayoutConstraint
                             constraintWithItem:titulo
                             attribute:NSLayoutAttributeLeading
@@ -268,23 +270,23 @@
                             attribute:NSLayoutAttributeTrailing
                             multiplier:1.0 constant:20]];
     
-    //constraint de imagen
-    //top
+    //Imagen constraint
+    //top con respecto al contenedor principal
     [constraints addObject:[NSLayoutConstraint
                             constraintWithItem:imagen
                             attribute:NSLayoutAttributeTop
                             relatedBy:NSLayoutRelationEqual
                             toItem:contenedorPrincipal
                             attribute:NSLayoutAttributeTop
-                            multiplier:1.0 constant:0]];
-    //Leading
+                            multiplier:1.0 constant:10]];
+    //Leading con respecto al contenedor principal
     [constraints addObject:[NSLayoutConstraint
                             constraintWithItem:imagen
                             attribute:NSLayoutAttributeLeading
                             relatedBy:NSLayoutRelationEqual
                             toItem:contenedorPrincipal
                             attribute:NSLayoutAttributeLeading
-                            multiplier:1.0 constant:0]];
+                            multiplier:1.0 constant:10]];
     
     //width
     [constraints addObject:[NSLayoutConstraint
@@ -306,9 +308,10 @@
                             multiplier:1.0
                             constant:80.00]];
     
-    
     [self addConstraints:constraints];
 }
+
+#pragma mark - Cargar de Vistas
 
 -(void)loadWithUser:(Tickets*)tickets{
     [self loadImagen:tickets.url_img];
@@ -330,7 +333,7 @@
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"HH:mm:ss"];
-    
+
     NSDate *hourstart = [dateFormatter dateFromString:inicio];
     NSDate *hourend = [dateFormatter dateFromString:final];
     
@@ -343,6 +346,7 @@
     NSString*funcion = [NSString stringWithFormat:@"%@ - %@", horainicio, horafinal];
     [horaFuncion setText:funcion];
     horaFuncion.textColor = [UIColor whiteColor];
+    
 }
 
 -(void)loadComponenteFecha:(NSString*)fecha{
@@ -360,7 +364,8 @@
     mes.textColor = [UIColor whiteColor];
     
     [dia setText:day];
-    [dia setFont:[UIFont systemFontOfSize:30]];
+    UIFontDescriptor*negrita = [dia.font.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+    dia.font = [UIFont fontWithDescriptor:negrita size:24];
 }
 
 -(void)loadTitulo:(NSString*)title{
