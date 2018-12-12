@@ -18,6 +18,7 @@
     UILabel *dia;
     UIView *fecha1;
     UIView *fecha2;
+    UIView *contenedor;
     
     
 }
@@ -45,8 +46,10 @@
     mes = [[UILabel alloc] init];
     mes.textColor =[UIColor whiteColor];
     dia = [[UILabel alloc] init];
+    contenedor = [[UIView alloc] init];
+    contenedor.backgroundColor = [UIColor grayColor];
     
-    
+    [self addSubview:contenedor];
     [self addSubview:lblImageView];
     [self addSubview:lblName];
     [self addSubview:lblTime];
@@ -55,9 +58,31 @@
     [self addSubview:fecha2];
     [self addSubview:mes];
     [self addSubview:dia];
+    
+    
 
     
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
+    
+    //contenedor
+    #pragma mark : contenedor constraint
+    
+    [contenedor setTranslatesAutoresizingMaskIntoConstraints:false];
+    
+    [constraints addObject:[NSLayoutConstraint
+                            constraintWithItem:contenedor attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:10.00]];
+    
+    [constraints addObject:[NSLayoutConstraint
+                            constraintWithItem:contenedor attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:10.00]];
+    
+    [constraints addObject:[NSLayoutConstraint
+                            constraintWithItem:contenedor attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-10.00]];
+    
+    [constraints addObject:[NSLayoutConstraint
+                            constraintWithItem:contenedor attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-10.00]];
+    
+    
+    
     
     [lblImageView setTranslatesAutoresizingMaskIntoConstraints:false];
     
@@ -67,7 +92,7 @@
                             constraintWithItem:lblImageView
                             attribute:NSLayoutAttributeTop
                             relatedBy:NSLayoutRelationEqual
-                            toItem:self
+                            toItem:contenedor
                             attribute:NSLayoutAttributeTop
                             multiplier:1.0 constant:10]];
     //Leading
@@ -75,7 +100,7 @@
                             constraintWithItem:lblImageView
                             attribute:NSLayoutAttributeLeading
                             relatedBy:NSLayoutRelationEqual
-                            toItem:self
+                            toItem:contenedor
                             attribute:NSLayoutAttributeLeading
                             multiplier:1.0 constant:20]];
     
@@ -105,7 +130,7 @@
     [lblName setTranslatesAutoresizingMaskIntoConstraints:false];
     //top
     [constraints addObject:[NSLayoutConstraint
-                            constraintWithItem:lblName attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:25.00]];
+                            constraintWithItem:lblName attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:lblImageView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.00]];
     [constraints addObject:[NSLayoutConstraint
                             constraintWithItem:lblName attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:lblImageView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:50.00]];
     
@@ -144,7 +169,7 @@
                             constraintWithItem:fecha1 attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:lblImageView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:20.00]];
     
     [constraints addObject:[NSLayoutConstraint
-                            constraintWithItem:fecha1 attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:25.00]];
+                            constraintWithItem:fecha1 attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:contenedor attribute:NSLayoutAttributeLeading multiplier:1.0 constant:25.00]];
     
     [constraints addObject:[NSLayoutConstraint
                             constraintWithItem:fecha1
@@ -174,7 +199,7 @@
                             constraintWithItem:fecha2 attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:fecha1 attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
     
     [constraints addObject:[NSLayoutConstraint
-                            constraintWithItem:fecha2 attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:25.00]];
+                            constraintWithItem:fecha2 attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:contenedor attribute:NSLayoutAttributeLeading multiplier:1.0 constant:25.00]];
     
     [constraints addObject:[NSLayoutConstraint
                             constraintWithItem:fecha2
